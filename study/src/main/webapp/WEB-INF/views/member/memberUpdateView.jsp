@@ -30,7 +30,24 @@
 				return false;
 			}
 			
-			alert("정보 수정을 성곻하셨습니다.");
+			$.ajax({
+				url: "/member/passChk",
+				type: "POST",
+				dataType: "json",
+				data: $("#updateForm").serializeArray(),
+				success: function(data) {
+					if(data == true) {
+						if(confirm("회원수정하시겠습니까?")) {
+							alert("회원수정을 성곻하셨습니다.");
+							$("#updateForm").submit();
+						}
+					} else {
+						alert("패스워드가 틀렸습니다.");
+						return;
+					}
+				}
+			});
+			
 		});
 	});
 </script>
@@ -38,7 +55,7 @@
 <body>
 
 <section id="container">
-	<form method="post" action="/member/memberUpdate">
+	<form method="post" action="/member/memberUpdate" id="updateForm">
 		<div class="form-group has-feedback">
 			<label class="control-label" for="userId">아이디</label>
 			<input class="form-control" type="text" id="userId" name="userId" value="${member.userId}" readonly="readonly" />
@@ -51,11 +68,11 @@
 			<label class="control-label" for="userName">성명</label>
 			<input class="form-control" type="text" id="userName" name="userName" value="${member.userName}"/>
 		</div>
-		<div class="form-group has-feedback">
-			<button class="btn btn-success" type="submit" id="submit">회원정보수정</button>
-			<button class="cancel btn btn-danger" type="button">취소</button>
-		</div>
 	</form>
+	<div class="form-group has-feedback">
+		<button class="btn btn-success" type="button" id="submit">회원정보수정</button>
+		<button class="cancel btn btn-danger" type="button">취소</button>
+	</div>
 </section>
 
 </body>

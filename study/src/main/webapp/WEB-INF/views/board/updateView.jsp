@@ -7,6 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
 <script type="text/javascript">
@@ -16,7 +18,11 @@
 		
 		$(".cancel_btn").on("click", function() {
 			event.preventDefault();
-			location.href="/board/list";
+			location.href="/board/readView?bno=${update.bno}"
+					+ "&page=${scri.page}"
+					+ "&perPageNum=${scri.perPageNum}"
+					+ "&searchType=${scri.searchType}"
+					+ "&keyword=${scri.keyword}";
 		});
 		
 		$(".update_btn").on("click", function() {
@@ -55,7 +61,12 @@
 	
 	<section id="container">
 		<form name="updateForm" role="form" method="post" action="/board/update">
-			<input type="hidden" name="bno" value="${update.bno}" readonly="readonly"/>
+			<input type="hidden" id="bno" name="bno" value="${update.bno}" readonly="readonly"/>
+			<input type="hidden" id="page" name="page" value="${scri.page}" readonly="readonly"/>
+			<input type="hidden" id="perPageNum" name="perPageNum" value="${scri.perPageNum}" readonly="readonly"/>
+			<input type="hidden" id="searchType" name="searchType" value="${scri.searchType}" readonly="readonly"/>
+			<input type="hidden" id="keyword" name="keyword" value="${scri.keyword}" readonly="readonly"/>
+				
 			<table>
 				<tbody>
 					<tr>

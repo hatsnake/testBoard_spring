@@ -16,6 +16,12 @@
 		
 		const formObj = $("form[name='updateForm']");
 		
+		$(document).on("click", "#fileDel", function() {
+			$(this).parent().remove();
+		});
+		
+		fn_addFile();
+		
 		$(".cancel_btn").on("click", function() {
 			event.preventDefault();
 			location.href="/board/readView?bno=${update.bno}"
@@ -44,6 +50,26 @@
 			}
 		}
 	}
+	
+	function fn_addFile() {
+		let fileIndex = 1;
+		
+		$(".fileAdd_btn").on("click", function() {
+			$("#fileIndex").append("<div><input type='file' style='float:left;' name='file_"+(fileIndex++)+"'>"+"</button>"+"<button type='button' style='float:right;' id='fileDelBtn'>"+"삭제"+"</button></div>");
+		});
+		$(document).on("click", "#fileDelBtn", function() {
+			$(this).parent().remove();
+		});
+	}
+	const fileNoArray = new Array();
+	const fileNameArray = new Array();
+	function fn_del(value, name) {
+		fileNoArray.push(value);
+		fileNameArray.push(name);
+		$("#fileNoDel").attr("value", fileNoArray);
+		$("#fileNameDel").attr("value", fileNameArray);
+	}
+	
 </script>
 </head>
 <body>
@@ -60,13 +86,15 @@
 	<hr />
 	
 	<section id="container">
-		<form name="updateForm" role="form" method="post" action="/board/update">
+		<form name="updateForm" role="form" method="post" action="/board/update" enctype="multipart/form-data">
 			<input type="hidden" id="bno" name="bno" value="${update.bno}" readonly="readonly"/>
 			<input type="hidden" id="page" name="page" value="${scri.page}" readonly="readonly"/>
 			<input type="hidden" id="perPageNum" name="perPageNum" value="${scri.perPageNum}" readonly="readonly"/>
 			<input type="hidden" id="searchType" name="searchType" value="${scri.searchType}" readonly="readonly"/>
 			<input type="hidden" id="keyword" name="keyword" value="${scri.keyword}" readonly="readonly"/>
-				
+			<input type="hidden" id="fileNoDel" name="fileNoDel[]" value="">
+			<input type="hidden" id="fileNameDel" name="fileNameDel[]" value="">
+			
 			<table>
 				<tbody>
 					<tr>
@@ -93,11 +121,24 @@
 							<fmt:formatDate value="${update.regdate}" pattern="yyyy-MM-dd" />
 						</td>
 					</tr>
+					<tr>
+						<td id="fileIndex">
+							<c:forEach var="file" items="${file}" varStatus="var">
+								<div>
+									<input type="hidden" id="FILE_NO" name="FILE_NO_${var.index}" values="${file.FILE_NO}">
+									<input type="hidden" id="FILE_NAME" name="FILE_NAME" value="FILE_NO_${var.index}">
+									<a href="#" id="fileName" onclick="return false;">${file.ORG_FILE_NAME}</a>(${file.FILE_SIZE}kb)
+									<button id="fileDel" onclick="fn_del('${file.FILE_NO}', 'FILE_NO_${var.index}');" type="button">삭제</button> <br />
+								</div>
+							</c:forEach>
+						</td>
+					</tr>
 				</tbody>
 			</table>
 			<div>
-				<button type="submit" class="update_btn">저장</button>
-				<button type="submit" class="cancel_btn">취소</button>
+				<button type="button" class="update_btn">저장</button>
+				<button type="button" class="cancel_btn">취소</button>
+				<button type="button" class="fileAdd_btn">파일추가</button>
 			</div>
 		</form>
 	</section>

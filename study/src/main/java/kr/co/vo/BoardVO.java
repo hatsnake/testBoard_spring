@@ -8,18 +8,20 @@ public class BoardVO {
 	private String content;
 	private String writer;
 	private Date regdate;
+	private int hit;
 	
 	public BoardVO() {
 		
 	}
 	
 	public BoardVO(int bno, String title, String content, 
-				   String writer, Date regdate) {
+				   String writer, Date regdate, int hit) {
 		this.bno = bno;
 		this.title = title;
 		this.content = content;
 		this.writer = writer;
 		this.regdate = regdate;
+		this.hit = hit;
 	}
 
 	public int getBno() {
@@ -60,6 +62,14 @@ public class BoardVO {
 
 	public void setRegdate(Date regdate) {
 		this.regdate = regdate;
+	}
+
+	public int getHit() {
+		return hit;
+	}
+
+	public void setHit(int hit) {
+		this.hit = hit;
 	}
 	
 }

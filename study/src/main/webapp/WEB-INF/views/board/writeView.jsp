@@ -22,6 +22,7 @@
 			formObj.submit();
 		});
 		
+		fn_addFile();
 	});
 	
 	function fn_valiChk() {
@@ -32,6 +33,17 @@
 				return true;
 			}
 		}
+	}
+	
+	function fn_addFile() {
+		let fileIndex = 1;
+		
+		$(".fileAdd_btn").on("click", function() {
+			$("#fileIndex").append("<div><input type='file' style='float:left;' name='file_"+(fileIndex++)+"'>"+"</button>"+"<button type='button' style='float:right;' id='fileDelBtn'>"+"삭제"+"</button></div>");
+		});
+		$(document).on("click",  "#fileDelBtn", function() {
+			$(this).parent().remove();
+		});
 	}
 </script>
 </head>
@@ -49,7 +61,7 @@
 	<hr />
 	
 	<section id="container">
-		<form name="writeForm" role="form" method="post" action="/board/write">
+		<form name="writeForm" role="form" method="post" action="/board/write" enctype="multipart/form-data">
 			<table>
 				<tbody>
 					<c:if test="${member.userId != null}">
@@ -72,8 +84,13 @@
 							</td>
 						</tr>
 						<tr>
+							<td id="fileIndex">
+							</td>
+						</tr>
+						<tr>
 							<td>
 								<button type="submit" class="write_btn">작성</button>
+								<button type="button" class="fileAdd_btn">파일추가</button>
 							</td>
 						</tr>
 					</c:if>
